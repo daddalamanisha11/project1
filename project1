@@ -1,518 +1,226 @@
-
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const HospitalApp());
-}
+void main() => runApp(const HospitalApp());
 
 class HospitalApp extends StatelessWidget {
   const HospitalApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Care Hospital',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-        ),
-        useMaterial3: true,
-      ),
-      home: const LoginPage(),
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Care Hospital',
+        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+            useMaterial3: true),
+        home: const LoginPage(),
+      );
 }
-
-// LOGIN PAGE
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blue.shade50,
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Container(
-            width: 500,
-            padding: const EdgeInsets.all(30),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
-                  blurRadius: 15,
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.local_hospital,
-                  size: 60,
-                  color: Colors.blue,
-                ),
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.blue.shade50,
+        body: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Container(
+              width: 500,
+              padding: const EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [BoxShadow(color: Colors.black.withOpacity(.08), blurRadius: 15)],
+              ),
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                const Icon(Icons.local_hospital, size: 60, color: Colors.blue),
                 const SizedBox(height: 15),
-                const Text(
-                  'Care Hospital',
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
-                ),
+                const Text('Care Hospital', style: TextStyle(
+                    fontSize: 26, fontWeight: FontWeight.bold, color: Colors.blue)),
                 const SizedBox(height: 8),
                 const Text('Login to continue'),
                 const SizedBox(height: 30),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    prefixIcon: Icon(Icons.email_outlined),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+                const TextField(decoration: InputDecoration(
+                    labelText: 'Email', prefixIcon: Icon(Icons.email_outlined),
+                    border: OutlineInputBorder())),
                 const SizedBox(height: 20),
-                const TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    prefixIcon: Icon(Icons.lock_outline),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+                const TextField(obscureText: true, decoration: InputDecoration(
+                    labelText: 'Password', prefixIcon: Icon(Icons.lock_outline),
+                    border: OutlineInputBorder())),
                 const SizedBox(height: 25),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
+                SizedBox(width: double.infinity, height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const HomePage(),
-                        ),
-                      );
-                    },
+                    onPressed: () => Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (_) => const HomePage())),
                     child: const Text('LOGIN'),
-                  ),
-                ),
-              ],
+                  )),
+              ]),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
-
-// HOME PAGE
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final items = [
+      ('Appointment', Icons.calendar_month, Colors.blue, const AppointmentPage()),
+      ('Doctors', Icons.people, Colors.green, const DoctorsPage()),
+      ('Departments', Icons.local_hospital, Colors.orange, const DepartmentsPage()),
+    ];
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Care Hospital'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-      ),
+      appBar: AppBar(title: const Text('Care Hospital'),
+          backgroundColor: Colors.blue, foregroundColor: Colors.white),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Welcome 👋',
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const Text('Welcome 👋', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          const Text('How can we help you today?'),
+          const SizedBox(height: 30),
+          Expanded(child: GridView.count(
+            crossAxisCount: 2, crossAxisSpacing: 15, mainAxisSpacing: 15,
+            children: items.map((item) => InkWell(
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => item.$4)),
+              child: Container(
+                decoration: BoxDecoration(color: item.$3.withOpacity(.1),
+                    borderRadius: BorderRadius.circular(15)),
+                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Icon(item.$2, color: item.$3, size: 45),
+                  const SizedBox(height: 12),
+                  Text(item.$1, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                ]),
               ),
-            ),
-            const SizedBox(height: 8),
-            const Text('How can we help you today?'),
-            const SizedBox(height: 30),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 15,
-                children: [
-                  serviceCard(
-                    context,
-                    Icons.calendar_month,
-                    'Appointment',
-                    Colors.blue,
-                    const AppointmentPage(),
-                  ),
-                  serviceCard(
-                    context,
-                    Icons.people,
-                    'Doctors',
-                    Colors.green,
-                    const DoctorsPage(),
-                  ),
-                  serviceCard(
-                    context,
-                    Icons.local_hospital,
-                    'Departments',
-                    Colors.orange,
-                    const DepartmentsPage(),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget serviceCard(
-    BuildContext context,
-    IconData icon,
-    String title,
-    Color color,
-    Widget page,
-  ) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => page),
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: color, size: 45),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
+            )).toList(),
+          )),
+        ]),
       ),
     );
   }
 }
 
-// APPOINTMENT PAGE
-
 class AppointmentPage extends StatefulWidget {
   const AppointmentPage({super.key});
-
   @override
-  State<AppointmentPage> createState() =>
-      _AppointmentPageState();
+  State<AppointmentPage> createState() => _AppointmentPageState();
 }
 
 class _AppointmentPageState extends State<AppointmentPage> {
   final formKey = GlobalKey<FormState>();
-
-  final nameController = TextEditingController();
-  final ageController = TextEditingController();
-  final phoneController = TextEditingController();
-
-  String gender = 'Male';
-  String department = 'Cardiology';
-  String doctor = 'Dr. Raj Kumar';
-
-  DateTime? selectedDate;
-  TimeOfDay? selectedTime;
+  final name = TextEditingController(), age = TextEditingController(), phone = TextEditingController();
+  String gender = 'Male', department = 'Cardiology', doctor = 'Dr. Raj Kumar';
+  DateTime? date;
+  TimeOfDay? time;
 
   @override
   void dispose() {
-    nameController.dispose();
-    ageController.dispose();
-    phoneController.dispose();
-    super.dispose();
+    name.dispose(); age.dispose(); phone.dispose(); super.dispose();
   }
 
   Future<void> chooseDate() async {
-    final date = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2030),
-    );
-
-    if (date != null) {
-      setState(() => selectedDate = date);
-    }
+    final picked = await showDatePicker(context: context,
+        initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(2030));
+    if (picked != null) setState(() => date = picked);
   }
 
   Future<void> chooseTime() async {
-    final time = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-
-    if (time != null) {
-      setState(() => selectedTime = time);
-    }
+    final picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    if (picked != null) setState(() => time = picked);
   }
 
-  void bookAppointment() {
+  void book() {
     if (!formKey.currentState!.validate()) return;
-
-    if (selectedDate == null || selectedTime == null) {
+    if (date == null || time == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select date and time'),
-        ),
-      );
+          const SnackBar(content: Text('Please select date and time')));
       return;
     }
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Appointment Booked'),
-        content: Text(
-          'Patient: ${nameController.text}\n'
-          'Department: $department\n'
-          'Doctor: $doctor\n'
-          'Date: ${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}\n'
-          'Time: ${selectedTime!.format(context)}',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
+    showDialog(context: context, builder: (_) => AlertDialog(
+      title: const Text('Appointment Booked'),
+      content: Text('Patient: ${name.text}\\nDepartment: $department\\nDoctor: $doctor'
+          '\\nDate: ${date!.day}/${date!.month}/${date!.year}\\nTime: ${time!.format(context)}'),
+      actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK'))],
+    ));
   }
+
+  InputDecoration field(String label, IconData icon) => InputDecoration(
+      labelText: label, prefixIcon: Icon(icon), border: const OutlineInputBorder());
 
   @override
   Widget build(BuildContext context) {
+    final departments = ['Cardiology', 'Neurology', 'Pediatrics', 'Orthopedics', 'General Medicine'];
+    final doctors = ['Dr. Raj Kumar', 'Dr. Priya Sharma', 'Dr. Anil Reddy'];
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Book Appointment'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-      ),
+      appBar: AppBar(title: const Text('Book Appointment'),
+          backgroundColor: Colors.blue, foregroundColor: Colors.white),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Patient Name',
-                  prefixIcon: Icon(Icons.person),
-                  border: OutlineInputBorder(),
-                ),
-                validator: (v) =>
-                    v == null || v.trim().isEmpty
-                        ? 'Enter patient name'
-                        : null,
-              ),
-              const SizedBox(height: 15),
-              TextFormField(
-                controller: ageController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Age',
-                  prefixIcon: Icon(Icons.cake),
-                  border: OutlineInputBorder(),
-                ),
-                validator: (v) =>
-                    v == null || v.trim().isEmpty
-                        ? 'Enter age'
-                        : null,
-              ),
-              const SizedBox(height: 15),
-              DropdownButtonFormField<String>(
-                value: gender,
-                decoration: const InputDecoration(
-                  labelText: 'Gender',
-                  border: OutlineInputBorder(),
-                ),
-                items: ['Male', 'Female', 'Other']
-                    .map((v) => DropdownMenuItem(
-                          value: v,
-                          child: Text(v),
-                        ))
-                    .toList(),
-                onChanged: (v) =>
-                    setState(() => gender = v!),
-              ),
-              const SizedBox(height: 15),
-              TextFormField(
-                controller: phoneController,
-                keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
-                  labelText: 'Phone Number',
-                  prefixIcon: Icon(Icons.phone),
-                  border: OutlineInputBorder(),
-                ),
-                validator: (v) =>
-                    v == null || v.trim().length < 10
-                        ? 'Enter a valid phone number'
-                        : null,
-              ),
-              const SizedBox(height: 15),
-              DropdownButtonFormField<String>(
-                value: department,
-                decoration: const InputDecoration(
-                  labelText: 'Department',
-                  border: OutlineInputBorder(),
-                ),
-                items: [
-                  'Cardiology',
-                  'Neurology',
-                  'Pediatrics',
-                  'Orthopedics',
-                  'General Medicine',
-                ]
-                    .map((v) => DropdownMenuItem(
-                          value: v,
-                          child: Text(v),
-                        ))
-                    .toList(),
-                onChanged: (v) =>
-                    setState(() => department = v!),
-              ),
-              const SizedBox(height: 15),
-              DropdownButtonFormField<String>(
-                value: doctor,
-                decoration: const InputDecoration(
-                  labelText: 'Doctor',
-                  border: OutlineInputBorder(),
-                ),
-                items: [
-                  'Dr. Raj Kumar',
-                  'Dr. Priya Sharma',
-                  'Dr. Anil Reddy',
-                ]
-                    .map((v) => DropdownMenuItem(
-                          value: v,
-                          child: Text(v),
-                        ))
-                    .toList(),
-                onChanged: (v) =>
-                    setState(() => doctor = v!),
-              ),
-              const SizedBox(height: 15),
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: chooseDate,
-                  icon: const Icon(Icons.calendar_month),
-                  label: Text(
-                    selectedDate == null
-                        ? 'Select Date'
-                        : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  onPressed: chooseTime,
-                  icon: const Icon(Icons.access_time),
-                  label: Text(
-                    selectedTime == null
-                        ? 'Select Time'
-                        : selectedTime!.format(context),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 25),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: bookAppointment,
-                  child: const Text('BOOK APPOINTMENT'),
-                ),
-              ),
-            ],
-          ),
-        ),
+        child: Form(key: formKey, child: Column(children: [
+          TextFormField(controller: name, decoration: field('Patient Name', Icons.person),
+              validator: (v) => v == null || v.trim().isEmpty ? 'Enter patient name' : null),
+          const SizedBox(height: 15),
+          TextFormField(controller: age, keyboardType: TextInputType.number,
+              decoration: field('Age', Icons.cake),
+              validator: (v) => v == null || v.trim().isEmpty ? 'Enter age' : null),
+          const SizedBox(height: 15),
+          DropdownButtonFormField<String>(value: gender, decoration: field('Gender', Icons.people),
+              items: ['Male', 'Female', 'Other'].map((v) => DropdownMenuItem(value: v, child: Text(v))).toList(),
+              onChanged: (v) => setState(() => gender = v!)),
+          const SizedBox(height: 15),
+          TextFormField(controller: phone, keyboardType: TextInputType.phone,
+              decoration: field('Phone Number', Icons.phone),
+              validator: (v) => v == null || v.trim().length < 10 ? 'Enter a valid phone number' : null),
+          const SizedBox(height: 15),
+          DropdownButtonFormField<String>(value: department, decoration: field('Department', Icons.local_hospital),
+              items: departments.map((v) => DropdownMenuItem(value: v, child: Text(v))).toList(),
+              onChanged: (v) => setState(() => department = v!)),
+          const SizedBox(height: 15),
+          DropdownButtonFormField<String>(value: doctor, decoration: field('Doctor', Icons.medical_services),
+              items: doctors.map((v) => DropdownMenuItem(value: v, child: Text(v))).toList(),
+              onChanged: (v) => setState(() => doctor = v!)),
+          const SizedBox(height: 15),
+          SizedBox(width: double.infinity, child: OutlinedButton.icon(
+            onPressed: chooseDate, icon: const Icon(Icons.calendar_month),
+            label: Text(date == null ? 'Select Date' : '${date!.day}/${date!.month}/${date!.year}'))),
+          SizedBox(width: double.infinity, child: OutlinedButton.icon(
+            onPressed: chooseTime, icon: const Icon(Icons.access_time),
+            label: Text(time == null ? 'Select Time' : time!.format(context)))),
+          const SizedBox(height: 25),
+          SizedBox(width: double.infinity, height: 50,
+              child: ElevatedButton(onPressed: book, child: const Text('BOOK APPOINTMENT'))),
+        ])),
       ),
     );
   }
 }
-
-// DOCTORS PAGE WITH RATING
 
 class DoctorsPage extends StatelessWidget {
   const DoctorsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final doctors = [
+      ('Dr. Raj Kumar', 'Cardiology', 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=300&q=80'),
+      ('Dr. Priya Sharma', 'Neurology', 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=300&q=80'),
+      ('Dr. Anil Reddy', 'Orthopedics', 'https://images.unsplash.com/photo-1618498082410-b4aa22193b38?auto=format&fit=crop&w=300&q=80'),
+      ('Dr. Sneha Rao', 'Pediatrics', 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=300&q=80'),
+    ];
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Our Doctors'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: const [
-          DoctorCard(
-            name: 'Dr. Raj Kumar',
-            department: 'Cardiology',
-            imageUrl:
-                'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=300&q=80',
-          ),
-          DoctorCard(
-            name: 'Dr. Priya Sharma',
-            department: 'Neurology',
-            imageUrl:
-                'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=300&q=80',
-          ),
-          DoctorCard(
-            name: 'Dr. Anil Reddy',
-            department: 'Orthopedics',
-            imageUrl:
-                'https://images.unsplash.com/photo-1618498082410-b4aa22193b38?auto=format&fit=crop&w=300&q=80',
-          ),
-          DoctorCard(
-            name: 'Dr. Sneha Rao',
-            department: 'Pediatrics',
-            imageUrl:
-                'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=300&q=80',
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Our Doctors'),
+          backgroundColor: Colors.blue, foregroundColor: Colors.white),
+      body: ListView(padding: const EdgeInsets.all(16),
+          children: doctors.map((d) => DoctorCard(name: d.$1, department: d.$2, imageUrl: d.$3)).toList()),
     );
   }
 }
 
 class DoctorCard extends StatefulWidget {
-  final String name;
-  final String department;
-  final String imageUrl;
-
-  const DoctorCard({
-    super.key,
-    required this.name,
-    required this.department,
-    required this.imageUrl,
-  });
-
+  final String name, department, imageUrl;
+  const DoctorCard({super.key, required this.name, required this.department, required this.imageUrl});
   @override
   State<DoctorCard> createState() => _DoctorCardState();
 }
@@ -521,93 +229,34 @@ class _DoctorCardState extends State<DoctorCard> {
   int rating = 0;
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 15),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: Image.network(
-                    widget.imageUrl,
-                    width: 75,
-                    height: 75,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) =>
-                        const CircleAvatar(
-                      radius: 37,
-                      child: Icon(Icons.person),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        widget.department,
-                        style: const TextStyle(
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const Divider(height: 25),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Rate this doctor',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Row(
-              children: List.generate(
-                5,
-                (index) => IconButton(
-                  onPressed: () {
-                    setState(() => rating = index + 1);
-                  },
-                  icon: Icon(
-                    index < rating
-                        ? Icons.star
-                        : Icons.star_border,
-                    color: Colors.amber,
-                    size: 30,
-                  ),
-                ),
-              ),
-            ),
-            Text(
-              rating == 0
-                  ? 'No rating given'
-                  : 'Your rating: $rating/5',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Card(
+    margin: const EdgeInsets.only(bottom: 15),
+    child: Padding(
+      padding: const EdgeInsets.all(12),
+      child: Column(children: [
+        Row(children: [
+          ClipRRect(borderRadius: BorderRadius.circular(40),
+            child: Image.network(widget.imageUrl, width: 75, height: 75, fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => const CircleAvatar(radius: 37, child: Icon(Icons.person)))),
+          const SizedBox(width: 15),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(widget.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+            const SizedBox(height: 5),
+            Text(widget.department, style: const TextStyle(color: Colors.blue)),
+          ])),
+        ]),
+        const Divider(height: 25),
+        const Align(alignment: Alignment.centerLeft,
+            child: Text('Rate this doctor', style: TextStyle(fontWeight: FontWeight.bold))),
+        Row(children: List.generate(5, (i) => IconButton(
+          onPressed: () => setState(() => rating = i + 1),
+          icon: Icon(i < rating ? Icons.star : Icons.star_border, color: Colors.amber, size: 30),
+        ))),
+        Text(rating == 0 ? 'No rating given' : 'Your rating: $rating/5'),
+      ]),
+    ),
+  );
 }
-
-// DEPARTMENTS PAGE
 
 class DepartmentsPage extends StatelessWidget {
   const DepartmentsPage({super.key});
@@ -615,151 +264,43 @@ class DepartmentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final departments = [
-      {
-        'name': 'Cardiology',
-        'description': 'Heart and blood vessel care',
-        'image':
-            'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=500&q=80',
-        'icon': Icons.favorite,
-      },
-      {
-        'name': 'Neurology',
-        'description': 'Brain and nervous system care',
-        'image':
-            'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=500&q=80',
-        'icon': Icons.psychology,
-      },
-      {
-        'name': 'Pediatrics',
-        'description': 'Healthcare for children',
-        'image':
-            'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?auto=format&fit=crop&w=500&q=80',
-        'icon': Icons.child_care,
-      },
-      {
-        'name': 'Orthopedics',
-        'description': 'Bone, joint and muscle care',
-        'image':
-            'https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=500&q=80',
-        'icon': Icons.accessibility_new,
-      },
-      {
-        'name': 'General Medicine',
-        'description': 'Diagnosis and general treatment',
-        'image':
-            'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=500&q=80',
-        'icon': Icons.medical_services,
-      },
-      {
-        'name': 'Dermatology',
-        'description': 'Skin, hair and nail care',
-        'image':
-            'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=500&q=80',
-        'icon': Icons.face,
-      },
-      {
-        'name': 'ENT',
-        'description': 'Ear, nose and throat care',
-        'image':
-            'https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=500&q=80',
-        'icon': Icons.hearing,
-      },
-      {
-        'name': 'Gynecology',
-        'description': "Women's health care",
-        'image':
-            'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=500&q=80',
-        'icon': Icons.medical_services,
-      },
+      ('Cardiology', 'Heart and blood vessel care', 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=500&q=80', Icons.favorite),
+      ('Neurology', 'Brain and nervous system care', 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=500&q=80', Icons.psychology),
+      ('Pediatrics', 'Healthcare for children', 'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?auto=format&fit=crop&w=500&q=80', Icons.child_care),
+      ('Orthopedics', 'Bone, joint and muscle care', 'https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=500&q=80', Icons.accessibility_new),
+      ('General Medicine', 'Diagnosis and general treatment', 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=500&q=80', Icons.medical_services),
+      ('Dermatology', 'Skin, hair and nail care', 'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=500&q=80', Icons.face),
+      ('ENT', 'Ear, nose and throat care', 'https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=500&q=80', Icons.hearing),
+      ('Gynecology', "Women's health care", 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=500&q=80', Icons.medical_services),
     ];
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Departments'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-      ),
+      appBar: AppBar(title: const Text('Departments'),
+          backgroundColor: Colors.blue, foregroundColor: Colors.white),
       body: GridView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: departments.length,
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 0.72,
-        ),
-        itemBuilder: (context, index) {
-          final department = departments[index];
-
-          return Card(
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: Image.network(
-                    department['image'] as String,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) =>
-                        Container(
-                      color: Colors.blue.shade50,
-                      child: Icon(
-                        department['icon'] as IconData,
-                        size: 50,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              department['icon'] as IconData,
-                              color: Colors.blue,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 5),
-                            Expanded(
-                              child: Text(
-                                department['name'] as String,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          department['description'] as String,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, crossAxisSpacing: 12, mainAxisSpacing: 12, childAspectRatio: .72),
+        itemBuilder: (context, i) {
+          final d = departments[i];
+          return Card(clipBehavior: Clip.antiAlias, child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start, children: [
+              AspectRatio(aspectRatio: 1, child: Image.network(d.$3, width: double.infinity,
+                fit: BoxFit.cover, errorBuilder: (_, __, ___) => Container(
+                  color: Colors.blue.shade50, child: Icon(d.$4, size: 50, color: Colors.blue)))),
+              Expanded(child: Padding(padding: const EdgeInsets.all(8),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Row(children: [Icon(d.$4, color: Colors.blue, size: 20), const SizedBox(width: 5),
+                    Expanded(child: Text(d.$1, maxLines: 1, overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.bold)))]),
+                  const SizedBox(height: 5),
+                  Text(d.$2, maxLines: 2, overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                ]))),
+            ],
+          ));
         },
       ),
     );
   }
 }
-
